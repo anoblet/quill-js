@@ -28,7 +28,7 @@ export class QuillJs extends LitElement {
       const constructor: any = this.constructor;
       constructor.styles.map(style => {
         const element = document.createElement("style");
-        element.innerHTML = theme.cssText;
+        element.innerHTML = style.cssText;
         this.appendChild(element);
       });
     }

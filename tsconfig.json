@@ -6,6 +6,6 @@
     "lib": ["es2017", "dom"],
     "experimentalDecorators": true,
     "declaration": true,
-    "allowSyntheticDefaultImports": true
+    "outDir": "dist"
   }
 }
