@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "lit-element": "^2.2.1",
-    "quill": "git+https://github.com/web-padawan/quill.git#shadow",
+    "quill": "git+https://github.com/anoblet/quill.git#shadow",
     "quill-form": "^0.1.3"
   },
   "devDependencies": {
