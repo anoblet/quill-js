@@ -12,13 +12,17 @@ import template from "./template";
 import theme from "./assets/quill.snow.css";
 let QuillJs = class QuillJs extends LitElement {
     constructor() {
-        super(...arguments);
+        super();
         this.render = template.bind(this);
+        this.boundedEventListener = this.onBlur.bind(this);
     }
     createRenderRoot() {
         return this.hasAttribute("disable-shadow")
             ? this
             : super.createRenderRoot();
+    }
+    connectedCallback() {
+        super.connectedCallback();
     }
     firstUpdated() {
         if (this.hasAttribute("disable-shadow")) {
@@ -61,12 +65,27 @@ let QuillJs = class QuillJs extends LitElement {
             },
             theme: "snow"
         });
+        // set value
+        this.quill.root.innerHTML = this.value;
+        this.quill.root.addEventListener("blur", this.boundedEventListener);
+    }
+    disconnectedCallback() {
+        this.quill.root.removeEventListener("blur", this.boundedEventListener);
+    }
+    onBlur() {
+        this.value = this.quill.root.innerHTML;
+        this.dispatchEvent(new CustomEvent("blur", {
+            detail: this.value
+        }));
     }
 };
 QuillJs.styles = [theme, style];
 __decorate([
     property({ type: Text })
 ], QuillJs.prototype, "name", void 0);
+__decorate([
+    property({ type: Text })
+], QuillJs.prototype, "value", void 0);
 __decorate([
     query("#editor")
 ], QuillJs.prototype, "editor", void 0);

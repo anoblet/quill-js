@@ -12,15 +12,26 @@ export class QuillJs extends LitElement {
   public render = template.bind(this);
 
   @property({ type: Text }) name: string;
+  @property({ type: Text }) value: string;
 
   @query("#editor") editor: HTMLElement;
 
   quill;
+  boundedEventListener;
+
+  constructor() {
+    super();
+    this.boundedEventListener = this.onBlur.bind(this);
+  }
 
   createRenderRoot() {
     return this.hasAttribute("disable-shadow")
       ? this
       : super.createRenderRoot();
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
   }
 
   firstUpdated() {
@@ -65,5 +76,23 @@ export class QuillJs extends LitElement {
       },
       theme: "snow"
     });
+
+    // set value
+    this.quill.root.innerHTML = this.value;
+
+    this.quill.root.addEventListener("blur", this.boundedEventListener);
+  }
+
+  disconnectedCallback() {
+    this.quill.root.removeEventListener("blur", this.boundedEventListener);
+  }
+
+  onBlur() {
+    this.value = this.quill.root.innerHTML;
+    this.dispatchEvent(
+      new CustomEvent("blur", {
+        detail: this.value
+      })
+    );
   }
 }
