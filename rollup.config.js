@@ -5,10 +5,12 @@ import typescript from "rollup-plugin-typescript";
 export default {
   input: "./src/component.ts",
   output: {
-    file: "dist/index.js",
+    file: "dist/component.js",
     format: "esm"
   },
   plugins: [
+    commonjs(),
+    resolve(),
     typescript()
   ]
 };
